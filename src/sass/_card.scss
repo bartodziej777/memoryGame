@@ -1,0 +1,74 @@
+.card {
+  width: 21%;
+  aspect-ratio: 1/1;
+  position: relative;
+  perspective: 50rem;
+  cursor: pointer;
+  border: 5px solid transparent;
+  transform: translate(-5px, -5px);
+
+  &__front,
+  &__back {
+    width: 100%;
+    aspect-ratio: 1/1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    border-radius: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  &__front {
+    background-color: #eef1f5;
+    border: 5px solid #fff;
+
+    transform: rotateY(-180deg);
+
+    &--unactive {
+      transform: rotateY(-180deg);
+    }
+
+    &--active {
+      transform: rotate(0deg);
+    }
+
+    & > img {
+      width: 80%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__back {
+    background: rgb(29, 209, 161);
+    background: linear-gradient(
+      135deg,
+      rgba(29, 209, 161, 1) 0%,
+      rgba(16, 172, 132, 1) 100%
+    );
+    border: 5px solid #fff;
+
+    &--active {
+      transform: rotateY(0deg);
+    }
+
+    &--unactive {
+      transform: rotateY(180deg);
+    }
+
+    i {
+      display: block;
+      font-size: 7.2rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-style: normal;
+      color: #eef1f5;
+      font-weight: 700;
+    }
+  }
+}

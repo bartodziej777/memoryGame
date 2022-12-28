@@ -1,0 +1,25 @@
+.game {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #eef1f5;
+  width: 95%;
+  border-radius: 1rem;
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  background: rgb(26, 188, 156);
+  background: linear-gradient(
+    135deg,
+    rgba(26, 188, 156, 1) 0%,
+    rgba(22, 160, 133, 1) 100%
+  );
+}
