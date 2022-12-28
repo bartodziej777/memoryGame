@@ -6,7 +6,6 @@ import imgJs from "../img/js.png";
 import imgPython from "../img/python.png";
 import imgReact from "../img/react.png";
 import imgCpp from "../img/cpp.png";
-import { render } from "sass";
 
 const gameCards = [
   { src: imgAngular, id: 1, type: 1 },
@@ -26,6 +25,10 @@ const gameCards = [
   { src: imgReact, id: 15, type: 8 },
   { src: imgReact, id: 16, type: 8 },
 ];
+
+const actions = [];
+const guessed = [];
+let reversed = 0;
 
 const renderCards = function () {
   gameCards.sort(() => Math.random() - 0.5);
@@ -47,12 +50,50 @@ const renderCards = function () {
   });
 };
 
+const checkCardType = function (id) {
+  return document.querySelector(`[data-id="${id}"]`).dataset.type;
+};
+
+const markAsGuessed = function () {
+  guessed.push(actions[actions.length - 1].id);
+  guessed.push(actions[actions.length - 2].id);
+  const card1 = document.querySelector(
+    `[data-id="${actions[actions.length - 1].id}"]`
+  );
+  const card2 = document.querySelector(
+    `[data-id="${actions[actions.length - 2].id}"]`
+  );
+  setTimeout(() => {
+    card1.style.opacity = 0;
+    card2.style.opacity = 0;
+  }, 500);
+};
+
 const reverseCard = function (id) {
   const card = document.querySelector(`[data-id="${id}"]`);
   card.querySelector(".card__front").classList.toggle("card__front--active");
   card.querySelector(".card__front").classList.toggle("card__front--unactive");
   card.querySelector(".card__back").classList.toggle("card__back--active");
   card.querySelector(".card__back").classList.toggle("card__back--unactive");
+};
+
+const checkCard = function (id) {
+  if (id === actions[actions.length - 1]?.id) return;
+  const type = checkCardType(id);
+  reversed++;
+  if (reversed > 2) {
+    reversed = 0;
+    reverseCard(actions[actions.length - 1]?.id);
+    reverseCard(actions[actions.length - 2]?.id);
+    checkCard(id);
+    return;
+  }
+  actions.push({ id, type });
+  if (reversed === 2 && type === actions[actions.length - 2].type) {
+    markAsGuessed();
+    reversed = 0;
+  }
+  reverseCard(id);
 };
 
 const init = function () {
@@ -63,5 +104,7 @@ init();
 
 document.querySelector(".game").addEventListener("click", function (e) {
   if (!e.target.closest(".card")) return;
-  reverseCard(e.target.closest(".card").dataset.id);
+  const id = e.target.closest(".card").dataset.id;
+  if (guessed.includes(id) || actions[actions - 1]?.id === id) return;
+  checkCard(id);
 });
