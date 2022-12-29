@@ -10,7 +10,20 @@
   align-items: center;
   background-color: #eef1f5;
   width: 95%;
+  max-width: 40rem;
   border-radius: 1rem;
+
+  @media only screen and (min-width: 40em) {
+    width: 75%;
+  }
+
+  @media only screen and (min-width: 56.25em) {
+    width: 50%;
+  }
+
+  @media only screen and (min-width: 75em) {
+    width: 35%;
+  }
 }
 
 .blur {
