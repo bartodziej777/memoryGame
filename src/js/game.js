@@ -29,6 +29,7 @@ const gameCards = [
 const actions = [];
 const guessed = [];
 let reversed = 0;
+let best;
 
 const renderCards = function () {
   gameCards.sort(() => Math.random() - 0.5);
@@ -48,6 +49,32 @@ const renderCards = function () {
 
     document.querySelector(".game").innerHTML = markup;
   });
+};
+
+const renderModal = function () {
+  let markup = `
+  <div class="modal">
+    <h2 class="modal__heading">Game over!</h2>
+    <p class="modal__text">Your score: <span>${actions.length}</span></p>
+    <p class="modal__text">Best score: <span>${best}</span></p>
+    <button class="modal__btn">Next game</button>
+  </div>`;
+  document.querySelector(".app").insertAdjacentHTML("beforeend", markup);
+  document.querySelector(".game").classList.add("blur");
+  document.querySelector(".modal__btn").addEventListener("click", () => {
+    location.reload();
+  });
+};
+
+const gameOver = function () {
+  if (!localStorage.getItem("bestScore")) best = actions.length;
+  else
+    best =
+      +localStorage.getItem("bestScore") > actions.length
+        ? actions.length
+        : +localStorage.getItem("bestScore");
+  localStorage.setItem("bestScore", best);
+  setTimeout(renderModal, 500);
 };
 
 const checkCardType = function (id) {
@@ -89,9 +116,18 @@ const checkCard = function (id) {
     return;
   }
   actions.push({ id, type });
-  if (reversed === 2 && type === actions[actions.length - 2].type) {
-    markAsGuessed();
+  if (reversed === 2) {
+    if (type === actions[actions.length - 2].type) markAsGuessed();
     reversed = 0;
+    const c1 = actions[actions.length - 1]?.id;
+    const c2 = actions[actions.length - 2]?.id;
+    setTimeout(() => {
+      reverseCard(c1);
+      reverseCard(c2);
+    }, 500);
+    if (guessed.length >= 16) {
+      gameOver();
+    }
   }
   reverseCard(id);
 };

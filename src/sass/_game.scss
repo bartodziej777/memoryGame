@@ -13,6 +13,10 @@
   border-radius: 1rem;
 }
 
+.blur {
+  filter: blur(1rem);
+}
+
 .app {
   width: 100vw;
   height: 100vh;
